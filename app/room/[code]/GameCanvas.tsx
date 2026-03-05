@@ -85,7 +85,13 @@ const socket = useMemo(() => {
     socket.addEventListener("close", () => setConnState("disconnected"));
 
     socket.addEventListener("message", (ev) => {
-      const msg = JSON.parse(ev.data);
+      let msg: any;
+try {
+  msg = JSON.parse(ev.data);
+} catch (e) {
+  console.warn("Bad WS message:", ev.data);
+  return;
+}
 
       type RoomStateWire = {
   phase: "lobby" | "playing" | "over";
@@ -328,7 +334,7 @@ if (msg.type === "game_over") {
 
   const me = players.find(p => p.id === myIdRef.current);
 
-  return (
+  if (!host){return (
     <div style={{ display: "grid", gap: 12 }}>
       <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
         <label>
@@ -409,5 +415,5 @@ if (msg.type === "game_over") {
 }}
 />
     </div>
-  );
+  );}
 }
