@@ -46,7 +46,21 @@ function getCellFromMouse(e: React.MouseEvent<HTMLCanvasElement>, canvas: HTMLCa
   const [phase, setPhase] = useState<"lobby" | "playing" | "over">("lobby");
   const [winnerId, setWinnerId] = useState<string | null>(null);
 
-  const host = process.env.NEXT_PUBLIC_PARTYKIT_HOST!;
+const host = process.env.NEXT_PUBLIC_PARTYKIT_HOST;
+
+if (!host) {
+  return (
+    <div style={{ padding: 12 }}>
+      <b>Missing env:</b> NEXT_PUBLIC_PARTYKIT_HOST<br />
+      Vercel Project Settings → Environment Variables дээр тохируулж redeploy хийнэ үү.
+    </div>
+  );
+}
+
+const socket = useMemo(() => {
+  return new PartySocket({ host, room: roomCode });
+}, [host, roomCode]);
+
   const socket = useMemo(() => {
     if (!host) return null;
     return new PartySocket({
