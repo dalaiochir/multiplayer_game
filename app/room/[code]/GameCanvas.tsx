@@ -73,21 +73,26 @@ function getCellFromMouse(e: React.MouseEvent<HTMLCanvasElement>, canvas: HTMLCa
     socket.addEventListener("message", (ev) => {
       const msg = JSON.parse(ev.data);
 
+      type RoomStateWire = {
+  phase: "lobby" | "playing" | "over";
+  players: Record<string, Player>;
+  guards: Guard[];
+  walls: Wall[];
+  winnerId?: string | null;
+};
+
       if (msg.type === "welcome") {
     myIdRef.current = msg.myId;
     return;
   }
 
       if (msg.type === "room_state") {
-  const st = msg.state;
-  setPhase(st.phase);
-  phaseRef.current = st.phase;
-
-  const pls = Object.values(st.players ?? {});
+  const st = msg.state as RoomStateWire;
+  const pls = Object.values(st.players);
   setPlayers(pls);
-  setGuards(st.guards ?? []);
-  setWalls(st.walls ?? []);
-  wallsRef.current = st.walls ?? [];
+  setGuards(st.guards);
+  setWalls(st.walls);
+  wallsRef.current = st.walls;
 }
       if (msg.type === "start") {
   setPhase("playing");
