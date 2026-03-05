@@ -365,29 +365,34 @@ if (msg.type === "game_over") {
   height={GRID_H * TILE}
   style={{ border: "1px solid #ccc", borderRadius: 8 }}
   onContextMenu={(e) => e.preventDefault()}
+
   onMouseDown={(e) => {
-    const w = wallsRef.current.find(w => w.ownerId === myId && w.pos.x === cell.x && w.pos.y === cell.y);
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    if (phase !== "playing") return;
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+  if (phase !== "playing") return;
 
-    const cell = getCellFromMouse(e, canvas);
+  const cell = getCellFromMouse(e, canvas);
 
-    if (e.button === 0) {
-      // left click: place wall
-      send({ type: "place_wall", cell });
-      return;
-    }
+  if (e.button === 0) {
+    send({ type: "place_wall", cell });
+    return;
+  }
 
-    if (e.button === 2) {
-      // right click: break own wall at that cell (if exists)
-      const myId = myIdRef.current;
-      if (!myId) return;
-      const w = walls.find(w => w.ownerId === myId && w.pos.x === cell.x && w.pos.y === cell.y);
-      if (!w) return;
-      send({ type: "break_wall", wallId: w.id });
-    }
-  }}
+  if (e.button === 2) {
+    const myId = myIdRef.current;
+    if (!myId) return;
+
+    const w = wallsRef.current.find(
+  (w) =>
+    w.ownerId === myIdRef.current &&
+    w.pos.x === cell.x &&
+    w.pos.y === cell.y
+);
+    if (!w) return;
+
+    send({ type: "break_wall", wallId: w.id });
+  }
+}}
 />
     </div>
   );
