@@ -1,0 +1,5 @@
+{
+  "name": "mk-pac-duel",
+  "main": "party/game.ts",
+  "compatibilityDate": "2026-03-01"
+}

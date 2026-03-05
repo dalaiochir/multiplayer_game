@@ -1,0 +1,33 @@
+{
+  "name": "mk-pac-duel",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "dev:party": "partykit dev",
+    "dev:all": "concurrently -k \"npm:dev:party\" \"npm:dev\"",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+
+    "party:deploy": "partykit deploy",
+    "party:tail": "partykit tail"
+  },
+  "dependencies": {
+    "next": "15.2.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "partykit": "^0.4.5",
+    "partysocket": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "concurrently": "^8.2.2",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "15.2.4",
+    "typescript": "^5.6.3"
+  }
+}
